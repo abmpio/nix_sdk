@@ -19,14 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Nix_HealthCheck_FullMethodName = "/proto.Nix/HealthCheck"
+	Nix_HealthCheck_FullMethodName         = "/proto.Nix/HealthCheck"
+	Nix_FindOneKVByKey_FullMethodName      = "/proto.Nix/FindOneKVByKey"
+	Nix_FindKVListByKeyList_FullMethodName = "/proto.Nix/FindKVListByKeyList"
 )
 
 // NixClient is the client API for Nix service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NixClient interface {
-	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
+	HealthCheck(ctx context.Context, in *NixHealthCheckRequest, opts ...grpc.CallOption) (*NixHealthCheckResponse, error)
+	FindOneKVByKey(ctx context.Context, in *FindKVOneByKeyRequest, opts ...grpc.CallOption) (*FindKVOneByKeyResponse, error)
+	FindKVListByKeyList(ctx context.Context, in *FindKVListByKeyListRequest, opts ...grpc.CallOption) (*FindKVListByKeyListResponse, error)
 }
 
 type nixClient struct {
@@ -37,10 +41,30 @@ func NewNixClient(cc grpc.ClientConnInterface) NixClient {
 	return &nixClient{cc}
 }
 
-func (c *nixClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
+func (c *nixClient) HealthCheck(ctx context.Context, in *NixHealthCheckRequest, opts ...grpc.CallOption) (*NixHealthCheckResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HealthCheckResponse)
+	out := new(NixHealthCheckResponse)
 	err := c.cc.Invoke(ctx, Nix_HealthCheck_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nixClient) FindOneKVByKey(ctx context.Context, in *FindKVOneByKeyRequest, opts ...grpc.CallOption) (*FindKVOneByKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FindKVOneByKeyResponse)
+	err := c.cc.Invoke(ctx, Nix_FindOneKVByKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nixClient) FindKVListByKeyList(ctx context.Context, in *FindKVListByKeyListRequest, opts ...grpc.CallOption) (*FindKVListByKeyListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FindKVListByKeyListResponse)
+	err := c.cc.Invoke(ctx, Nix_FindKVListByKeyList_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +75,9 @@ func (c *nixClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opt
 // All implementations must embed UnimplementedNixServer
 // for forward compatibility.
 type NixServer interface {
-	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
+	HealthCheck(context.Context, *NixHealthCheckRequest) (*NixHealthCheckResponse, error)
+	FindOneKVByKey(context.Context, *FindKVOneByKeyRequest) (*FindKVOneByKeyResponse, error)
+	FindKVListByKeyList(context.Context, *FindKVListByKeyListRequest) (*FindKVListByKeyListResponse, error)
 	mustEmbedUnimplementedNixServer()
 }
 
@@ -62,8 +88,14 @@ type NixServer interface {
 // pointer dereference when methods are called.
 type UnimplementedNixServer struct{}
 
-func (UnimplementedNixServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
+func (UnimplementedNixServer) HealthCheck(context.Context, *NixHealthCheckRequest) (*NixHealthCheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
+}
+func (UnimplementedNixServer) FindOneKVByKey(context.Context, *FindKVOneByKeyRequest) (*FindKVOneByKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindOneKVByKey not implemented")
+}
+func (UnimplementedNixServer) FindKVListByKeyList(context.Context, *FindKVListByKeyListRequest) (*FindKVListByKeyListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindKVListByKeyList not implemented")
 }
 func (UnimplementedNixServer) mustEmbedUnimplementedNixServer() {}
 func (UnimplementedNixServer) testEmbeddedByValue()             {}
@@ -87,7 +119,7 @@ func RegisterNixServer(s grpc.ServiceRegistrar, srv NixServer) {
 }
 
 func _Nix_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HealthCheckRequest)
+	in := new(NixHealthCheckRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -99,7 +131,43 @@ func _Nix_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: Nix_HealthCheck_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NixServer).HealthCheck(ctx, req.(*HealthCheckRequest))
+		return srv.(NixServer).HealthCheck(ctx, req.(*NixHealthCheckRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Nix_FindOneKVByKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindKVOneByKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NixServer).FindOneKVByKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Nix_FindOneKVByKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NixServer).FindOneKVByKey(ctx, req.(*FindKVOneByKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Nix_FindKVListByKeyList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindKVListByKeyListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NixServer).FindKVListByKeyList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Nix_FindKVListByKeyList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NixServer).FindKVListByKeyList(ctx, req.(*FindKVListByKeyListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -114,6 +182,14 @@ var Nix_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "HealthCheck",
 			Handler:    _Nix_HealthCheck_Handler,
+		},
+		{
+			MethodName: "FindOneKVByKey",
+			Handler:    _Nix_FindOneKVByKey_Handler,
+		},
+		{
+			MethodName: "FindKVListByKeyList",
+			Handler:    _Nix_FindKVListByKeyList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

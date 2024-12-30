@@ -26,8 +26,8 @@ func clientIniStartupAction() app.IStartupAction {
 		for {
 			err := _client.InitConnnection()
 			if err == nil {
-				var res *pb.HealthCheckResponse
-				res, err = _client.HealthCheck(context.TODO(), &pb.HealthCheckRequest{})
+				var res *pb.NixHealthCheckResponse
+				res, err = _client.HealthCheck(context.TODO(), &pb.NixHealthCheckRequest{})
 				if err == nil {
 					break
 				}
