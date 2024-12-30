@@ -1,10 +1,10 @@
-package sdk
+package nix_sdk
 
 import (
 	"fmt"
 
 	"github.com/abmpio/abmp/pkg/log"
-	pb "github.com/abmpio/nix/sdk/proto"
+	pb "github.com/abmpio/nix_sdk/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

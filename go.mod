@@ -1,4 +1,4 @@
-module github.com/abmpio/nix/sdk
+module github.com/abmpio/nix_sdk
 
 go 1.22.8
 
