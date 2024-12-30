@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package="./nix";
+
+package proto;
+
+service Nix {
+	rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+}
+
+message BaseResponse {
+	int32 code = 1;
+	string message = 2;
+}
+
+message HealthCheckRequest {
+	string service = 1;
+}
+
+message HealthCheckResponse {
+	enum ServiceStatus{
+		UNKNOWN = 0;
+		SERVING = 1;
+		NOT_SERVING = 2;
+		SERVICE_UNKNOWN = 3;
+	}
+	ServiceStatus status = 1;
+}
