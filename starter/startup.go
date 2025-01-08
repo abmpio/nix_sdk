@@ -6,8 +6,9 @@ import (
 
 	"github.com/abmpio/abmp/pkg/log"
 	"github.com/abmpio/app"
+	"github.com/abmpio/app/host"
+	"github.com/abmpio/configurationx/options/nix"
 	"github.com/abmpio/nix_sdk"
-	"github.com/abmpio/nix_sdk/options"
 	pb "github.com/abmpio/nix_sdk/proto"
 )
 
@@ -20,8 +21,9 @@ func clientIniStartupAction() app.IStartupAction {
 		if app.HostApplication.SystemConfig().App.IsRunInCli {
 			return
 		}
-		opt := options.GetOptions()
-		_client := nix_sdk.NewClient(nix_sdk.WithHost(opt.NixServerHost), nix_sdk.WithPort(opt.Port))
+		opt := nix.GetNixOptions()
+		normalizeOptions(opt)
+		_client := nix_sdk.NewClient(nix_sdk.WithHost(opt.Host), nix_sdk.WithPort(opt.Port))
 		//测试ping
 		for {
 			err := _client.InitConnnection()
@@ -44,4 +46,11 @@ func clientIniStartupAction() app.IStartupAction {
 		app.Context.RegistInstanceAs(_client, new(pb.NixClient))
 		app.Context.RegistInstanceAs(_client, new(nix_sdk.Client))
 	})
+}
+
+func normalizeOptions(o *nix.NixOptions) {
+	if o != nil && len(o.DefaultApp) <= 0 {
+		appName := host.GetHostEnvironment().GetEnvString(host.ENV_AppName)
+		o.DefaultApp = appName
+	}
 }
