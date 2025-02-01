@@ -24,28 +24,41 @@ func clientIniStartupAction() app.IStartupAction {
 		if app.HostApplication.SystemConfig().App.IsRunInCli {
 			return
 		}
+		var _client pb.NixClient
 		opt := nix.GetNixOptions()
-		normalizeOptions(opt)
-		_client := nix_sdk.NewClient(nix_sdk.WithHost(opt.Host), nix_sdk.WithPort(opt.Port))
-		//测试ping
-		for {
-			err := _client.InitConnnection()
-			if err == nil {
-				var res *pb.NixHealthCheckResponse
-				res, err = _client.HealthCheck(context.TODO(), &pb.NixHealthCheckRequest{})
-				if err == nil {
-					break
-				}
-				if res != nil {
-					log.Logger.Info(res.Status.String())
-				}
-			}
+		if !opt.Disabled {
+			normalizeOptions(opt)
+			grpcClient := nix_sdk.NewClient(nix_sdk.WithHost(opt.Host), nix_sdk.WithPort(opt.Port))
+			//测试ping
+			for {
+				err := grpcClient.InitConnnection()
+				if err != nil {
+					log.Logger.Warn(fmt.Sprintf("初始化nix grpc连接时出现异常,option:%s, err:%s",
+						opt.ToJsonString(),
+						err.Error()))
+				} else {
+					var res *pb.NixHealthCheckResponse
+					res, err = grpcClient.HealthCheck(context.TODO(), &pb.NixHealthCheckRequest{})
+					if err != nil {
+						log.Logger.Warn(fmt.Sprintf("检测nix grpc 服务健康是否正常时出现异常,option:%s, err:%s",
+							opt.ToJsonString(),
+							err.Error()))
+					} else {
+						if res != nil {
+							log.Logger.Info(res.Status.String())
+						}
+						// set value
+						_client = grpcClient
+						break
 
-			log.Logger.Warn(fmt.Sprintf("连接到nix服务时出现异常,option:%s, err:%s",
-				opt.ToJsonString(),
-				err.Error()))
-			log.Logger.Warn("2s后重新测试...")
-			time.Sleep(2 * time.Second)
+					}
+				}
+				log.Logger.Warn("2s后重新测试...")
+				time.Sleep(2 * time.Second)
+			}
+		} else {
+			// nullable client
+			_client = &nix_sdk.NullableClient{}
 		}
 		nix_sdk.SetGlobalClient(_client)
 		app.Context.RegistInstanceAs(_client, new(pb.NixClient))

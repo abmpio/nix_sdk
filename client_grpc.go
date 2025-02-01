@@ -16,6 +16,8 @@ type Client struct {
 	pb.NixClient
 }
 
+var _ pb.NixClient = (*Client)(nil)
+
 func NewClient(opts ...Option) *Client {
 	client := &Client{
 		option: newDefaultOptions(),
