@@ -8,6 +8,10 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+type IClient interface {
+	pb.NixClient
+}
+
 type Client struct {
 	option *Options
 
@@ -17,6 +21,7 @@ type Client struct {
 }
 
 var _ pb.NixClient = (*Client)(nil)
+var _ IClient = (*Client)(nil)
 
 func NewClient(opts ...Option) *Client {
 	client := &Client{

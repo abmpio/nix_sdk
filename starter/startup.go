@@ -24,7 +24,7 @@ func clientIniStartupAction() app.IStartupAction {
 		if app.HostApplication.SystemConfig().App.IsRunInCli {
 			return
 		}
-		var _client pb.NixClient
+		var _client nix_sdk.IClient
 		opt := nix.GetNixOptions()
 		if !opt.Disabled {
 			normalizeOptions(opt)
@@ -37,8 +37,7 @@ func clientIniStartupAction() app.IStartupAction {
 						opt.ToJsonString(),
 						err.Error()))
 				} else {
-					var res *pb.NixHealthCheckResponse
-					res, err = grpcClient.HealthCheck(context.TODO(), &pb.NixHealthCheckRequest{})
+					res, err := grpcClient.HealthCheck(context.TODO(), &pb.NixHealthCheckRequest{})
 					if err != nil {
 						log.Logger.Warn(fmt.Sprintf("检测nix grpc 服务健康是否正常时出现异常,option:%s, err:%s",
 							opt.ToJsonString(),
@@ -50,7 +49,6 @@ func clientIniStartupAction() app.IStartupAction {
 						// set value
 						_client = grpcClient
 						break
-
 					}
 				}
 				log.Logger.Warn("2s后重新测试...")

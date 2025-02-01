@@ -1,17 +1,13 @@
 package nix_sdk
 
-import (
-	pb "github.com/abmpio/nix_sdk/proto"
-)
-
 var (
-	_globalClient pb.NixClient
+	_globalClient IClient
 )
 
-func GlobalClient() pb.NixClient {
+func GlobalClient() IClient {
 	return _globalClient
 }
 
-func SetGlobalClient(c pb.NixClient) {
+func SetGlobalClient(c IClient) {
 	_globalClient = c
 }
