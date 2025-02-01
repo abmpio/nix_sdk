@@ -57,6 +57,7 @@ func clientIniStartupAction() app.IStartupAction {
 				time.Sleep(2 * time.Second)
 			}
 		} else {
+			log.Logger.Warn("nix disabled")
 			// nullable client
 			_client = &nix_sdk.NullableClient{}
 		}
