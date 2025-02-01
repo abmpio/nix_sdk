@@ -41,7 +41,9 @@ func clientIniStartupAction() app.IStartupAction {
 				}
 			}
 
-			log.Logger.Warn(err.Error())
+			log.Logger.Warn(fmt.Sprintf("连接到nix服务时出现异常,option:%s, err:%s",
+				opt.ToJsonString(),
+				err.Error()))
 			log.Logger.Warn("2s后重新测试...")
 			time.Sleep(2 * time.Second)
 		}
