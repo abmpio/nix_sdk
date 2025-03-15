@@ -49,7 +49,7 @@ func (c *Client) InitConnnection(opts ...grpc.DialOption) error {
 			c.option.getHostTarget(), err.Error())
 		return err
 	}
-	log.Printf("initialize nix_client grpc connection finished,host:%s\n", c.option.getHostTarget())
+	log.Printf("initialize nix sdk grpc connection finished,host:%s\n", c.option.getHostTarget())
 	c.conn = conn
 	//保存客户端
 	c.NixClient = pb.NewNixClient(conn)

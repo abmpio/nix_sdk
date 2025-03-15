@@ -9,8 +9,8 @@ import (
 	"github.com/abmpio/app"
 	"github.com/abmpio/app/host"
 	"github.com/abmpio/configurationx/options/nix"
-	"github.com/abmpio/nix_sdk"
 	pb "github.com/abmpio/nix_sdk/proto"
+	nix_sdk "github.com/abmpio/nix_sdk/sdk"
 )
 
 func init() {
@@ -55,7 +55,7 @@ func clientIniStartupAction() app.IStartupAction {
 				time.Sleep(2 * time.Second)
 			}
 		} else {
-			log.Logger.Warn("nix disabled")
+			log.Logger.Warn("nix sdk client disabled")
 			// nullable client
 			_client = &nix_sdk.NullableClient{}
 		}
