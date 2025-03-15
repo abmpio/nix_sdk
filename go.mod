@@ -7,7 +7,7 @@ toolchain go1.23.5
 require (
 	github.com/abmpio/abmp v0.0.0-20240708094807-9bfd8036f0dc
 	github.com/abmpio/app v0.0.0-20241122102835-1f51c56dd689
-	github.com/abmpio/configurationx v0.0.0-20250312103012-7be159ee36db
+	github.com/abmpio/configurationx v0.0.0-20250315142109-5952535a7c05
 	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.5
 )
@@ -27,7 +27,7 @@ require (
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
-	github.com/spf13/afero v1.13.0 // indirect
+	github.com/spf13/afero v1.14.0 // indirect
 	github.com/spf13/cast v1.7.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/spf13/viper v1.19.0 // indirect
