@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-option go_package="./nix";
+option go_package="github.com/abmpio/nix_sdk/proto";
 
-package proto;
+package nix;
 
 service Nix {
-	rpc HealthCheck(NixHealthCheckRequest) returns (NixHealthCheckResponse);
+	rpc HealthCheck(NixHealthCheckRequest) returns (NixHealthCheckResponse){};
 
-	rpc FindOneKVByKey(FindKVOneByKeyRequest) returns (FindKVOneByKeyResponse);
-	rpc FindKVListByKeyList(FindKVListByKeyListRequest) returns (FindKVListByKeyListResponse);
-	rpc FindKVListByTag(FindKVListByTagRequest) returns (FindKVListByTagResponse);
+	rpc FindOneKVByKey(FindKVOneByKeyRequest) returns (FindKVOneByKeyResponse){};
+	rpc FindKVListByKeyList(FindKVListByKeyListRequest) returns (FindKVListByKeyListResponse){};
+	rpc FindKVListByTag(FindKVListByTagRequest) returns (FindKVListByTagResponse){};
 }
 
 

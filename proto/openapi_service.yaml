@@ -1,0 +1,16 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    - selector: nix.Nix.HealthCheck
+      get: /v1/health_check
+    - selector: nix.Nix.FindOneKVByKey
+      post: /v1/find_onekv_by_key
+      body: "*"
+    - selector: nix.Nix.FindKVListByKeyList
+      post: /v1/find_kvlist_by_keylist
+      body: "*"
+    - selector: nix.Nix.FindKVListByTag
+      post: /v1/find_kvlist_by_tag
+      body: "*"

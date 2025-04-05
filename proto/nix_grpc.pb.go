@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: nix.proto
 
-package nix
+package proto
 
 import (
 	context "context"
@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Nix_HealthCheck_FullMethodName         = "/proto.Nix/HealthCheck"
-	Nix_FindOneKVByKey_FullMethodName      = "/proto.Nix/FindOneKVByKey"
-	Nix_FindKVListByKeyList_FullMethodName = "/proto.Nix/FindKVListByKeyList"
-	Nix_FindKVListByTag_FullMethodName     = "/proto.Nix/FindKVListByTag"
+	Nix_HealthCheck_FullMethodName         = "/nix.Nix/HealthCheck"
+	Nix_FindOneKVByKey_FullMethodName      = "/nix.Nix/FindOneKVByKey"
+	Nix_FindKVListByKeyList_FullMethodName = "/nix.Nix/FindKVListByKeyList"
+	Nix_FindKVListByTag_FullMethodName     = "/nix.Nix/FindKVListByTag"
 )
 
 // NixClient is the client API for Nix service.
@@ -210,7 +210,7 @@ func _Nix_FindKVListByTag_Handler(srv interface{}, ctx context.Context, dec func
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Nix_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.Nix",
+	ServiceName: "nix.Nix",
 	HandlerType: (*NixServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
