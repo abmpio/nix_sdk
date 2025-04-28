@@ -1,4 +1,4 @@
-package nix_sdk
+package sdk
 
 import (
 	"context"
@@ -11,6 +11,8 @@ type NullableClient struct {
 }
 
 var _ pb.NixClient = (*NullableClient)(nil)
+
+// #region NixClient Members
 
 func (c *NullableClient) HealthCheck(ctx context.Context, in *pb.NixHealthCheckRequest, opts ...grpc.CallOption) (*pb.NixHealthCheckResponse, error) {
 	return &pb.NixHealthCheckResponse{
@@ -28,3 +30,5 @@ func (c *NullableClient) FindKVListByKeyList(ctx context.Context, in *pb.FindKVL
 func (c *NullableClient) FindKVListByTag(ctx context.Context, in *pb.FindKVListByTagRequest, opts ...grpc.CallOption) (*pb.FindKVListByTagResponse, error) {
 	return &pb.FindKVListByTagResponse{}, nil
 }
+
+// #endregion

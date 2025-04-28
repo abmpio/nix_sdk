@@ -1,8 +1,9 @@
-package nix_sdk
+package sdk
 
 import (
-	"log"
+	"fmt"
 
+	"github.com/abmpio/abmp/pkg/log"
 	pb "github.com/abmpio/nix_sdk/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -45,11 +46,12 @@ func (c *Client) InitConnnection(opts ...grpc.DialOption) error {
 	mergedOpts = append(mergedOpts, opts...)
 	conn, err := grpc.NewClient(c.option.getHostTarget(), mergedOpts...)
 	if err != nil {
-		log.Printf("occur error when create grpc server connection , host:%s,error: %s\n",
-			c.option.getHostTarget(), err.Error())
+		log.Logger.Error(fmt.Sprintf("occur error when create nix grpc server connection , host:%s,error: %s\n",
+			c.option.getHostTarget(),
+			err.Error()))
 		return err
 	}
-	log.Printf("initialize nix sdk grpc connection finished,host:%s\n", c.option.getHostTarget())
+	log.Logger.Info(fmt.Sprintf("initialize nix sdk grpc connection finished,host:%s\n", c.option.getHostTarget()))
 	c.conn = conn
 	//保存客户端
 	c.NixClient = pb.NewNixClient(conn)

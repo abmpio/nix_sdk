@@ -1,4 +1,4 @@
-package nix_sdk
+package sdk
 
 import (
 	"fmt"
