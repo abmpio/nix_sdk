@@ -14,7 +14,9 @@ import (
 )
 
 func init() {
-	fmt.Println("abmpio.nix_sdk.starter init")
+	if app.IsServerMode() {
+		fmt.Println("abmpio.nix_sdk.starter init")
+	}
 
 	app.RegisterOneStartupAction(clientIniStartupAction)
 }
